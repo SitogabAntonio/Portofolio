@@ -1,0 +1,568 @@
+/* public/css/portfolio.css – Versi INTERAKTIF 2025 */
+
+/* Reset & Base */
+* { margin:0; padding:0; box-sizing:border-box; cursor: none; } /* Sembunyikan cursor default */
+
+/* === FIXED NAVBAR HOLOGRAM === */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.5rem 2rem;
+    background: rgba(10, 10, 30, 0.7);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+    z-index: 9997;
+    transition: all 0.4s;
+}
+
+header.scrolled {
+    padding: 1rem 2rem;
+    background: rgba(10, 10, 30, 0.95);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 900;
+    background: linear-gradient(90deg, #00ffff, #ff00ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+nav ul {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+}
+
+nav a {
+    color: #ddd;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: color 0.3s;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #a855f7;
+    transition: width 0.4s;
+}
+
+nav a:hover {
+    color: #a855f7;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+/* Mobile menu toggle (opsional nanti) */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    nav ul { display: none; }
+    .menu-toggle { display: block; }
+}
+
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0a0f;
+    color: #e0e0e0;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Background Hologram Bergerak */
+body::before {
+    content: ''; position: fixed; inset: 0; z-index: -3;
+    background: linear-gradient(45deg, #0f0f1a, #1a0033, #001a1a, #1a1a00);
+    background-size: 400% 400%;
+    animation: hologram 20s ease infinite;
+}
+body::after {
+    content: ''; position: fixed; inset: 0; z-index: -2;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(168,85,247,0.25), transparent 50%);
+    pointer-events: none;
+    transition: background 0.4s;
+}
+
+.skill-tag {
+  background: rgba(128, 0, 255, 0.15);
+  border: 1px solid #8000ff;
+  padding: 10px 20px;
+  border-radius: 50px;
+  backdrop-filter: blur(8px);
+  transition: 0.3s;
+}
+
+.skill-tag:hover {
+  background: #8000ff;
+  box-shadow: 0 0 20px rgba(128, 0, 255, 0.6);
+  transform: scale(1.1);
+}
+
+/* === CURSOR ZERO-LAG – SUPER RESPONSIVE === */
+.cursor {
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    background: radial-gradient(circle, #a855f7 0%, #e0a8ff 50%, transparent 80%);
+    border: 2px solid rgba(168, 85, 247, 0.8);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    transform: translate(-50%, -50%);
+    
+    /* HILANGKAN TRANSITION untuk posisi → zero delay! */
+    transition: width 0.3s ease, height 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    /* Hanya ukuran & warna yang di-transition, bukan posisi */
+    
+    opacity: 1 !important;
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.9);
+    mix-blend-mode: screen; /* bikin lebih glowing */
+}
+
+.cursor.hover {
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, #ff00ff 0%, #00ffff 60%, transparent 90%);
+    box-shadow: 0 0 60px rgba(255, 0, 255, 0.9);
+}
+
+.cursor.active {
+    opacity: 1;
+}
+
+/* Ripple klik */
+.ripple {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    background: rgba(168, 85, 247, 0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    animation: rippleAnim 1s ease-out forwards;
+    transform: translate(-50%, -50%);
+}
+@keyframes rippleAnim {
+    to { transform: translate(-50%, -50%) scale(8); opacity: 0; }
+}
+
+/* === PROJECT CARD LEBIH CANTIK === */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+.project-card {
+    background: rgba(30, 30, 50, 0.7);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #444;
+    transition: all 0.4s;
+    backdrop-filter: blur(12px);
+}
+.project-card:hover {
+    transform: translateY(-15px);
+    border-color: #a855f7;
+    box-shadow: 0 20px 50px rgba(168, 85, 247, 0.4);
+}
+.project-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+.project-info {
+    padding: 1.5rem;
+    text-align: center;
+}
+.project-info h3 {
+    margin-bottom: 0.5rem;
+    color: #a855f7;
+}
+.project-info p {
+    font-size: 0.95rem;
+    color: #bbb;
+}
+
+
+/* Magnetic Button & Link */
+.magnetic {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.magnetic:hover {
+    transform: 1.15;
+}
+
+/* Reusable Classes (tetap ada) */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+.btn {
+    display: inline-block;
+    padding: 16px 40px;
+    background: rgba(168,85,247,0.15);
+    border: 2px solid #a855f7;
+    border-radius: 60px;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    backdrop-filter: blur(12px);
+    position: relative;
+    overflow: hidden;
+    transition: all .4s;
+}
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: .6s;
+}
+.btn:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0 50px rgba(168,85,247,.7);
+}
+.btn:hover::before { left: 100%; }
+
+.text-holo {
+    background: linear-gradient(90deg, #00ffff, #ff00ff, #00ff99, #00ffff);
+    background-size: 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: holoText 8s linear infinite;
+}
+@keyframes holoText { 0% { background-position: 0% } 100% { background-position: 300% } }
+
+@keyframes hologram { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+
+/* FLIP CARD SERTIFIKAT */
+.flip-card {
+    perspective: 1000px;
+    height: 300px;
+}
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    overflow: hidden;
+}
+.flip-card-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.flip-card-back {
+    background: linear-gradient(135deg, #1a0033, #0f0f1a);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transform: rotateY(180deg);
+    padding: 1.5rem;
+    text-align: center;
+}
+
+/* GALERI DOKUMENTASI */
+.doc-img {
+    width: 100%;
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: all 0.4s;
+    break-inside: avoid;
+}
+.doc-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 50px rgba(168,85,247,0.5);
+    z-index: 2;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    div[style*="columns"] { columns: 2; }
+}
+@media (max-width: 480px) {
+    div[style*="columns"] { columns: 1; }
+}
+
+/* ==================== TAMBAHAN FITUR YANG KAMU MINTA ==================== */
+
+/* 1. ABOUT ME – FOTO KIRI, DETAIL + SKILL KANAN (FIX UKURAN) */
+.about-wrapper {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 4rem;
+    align-items: start;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+.about-photo img {
+    width: 320px;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 24px;
+    border: 4px solid #a855f7;
+    box-shadow: 0 0 70px rgba(168,85,247,.7);
+}
+.about-detail-text {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #ddd;
+    margin-bottom: 2rem;
+}
+.about-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 2rem;
+    background: rgba(30,30,60,0.5);
+    padding: 1.8rem;
+    border-radius: 18px;
+    border: 1px solid rgba(168,85,247,0.3);
+    backdrop-filter: blur(10px);
+    margin-bottom: 2rem;
+}
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.05rem;
+}
+.info-label { color: #a78bfa; font-weight: 600; }
+.info-value { color: #fff; }
+
+/* 2. BEHIND THE SCENE – 2 FOTO SAMA BESAR & INDAH */
+.bts-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    max-width: 1100px;
+    margin: 4rem auto 0;
+}
+.bts-img {
+    width: 100%;
+    height: 480px;
+    object-fit: cover;
+    border-radius: 28px;
+    box-shadow: 0 20px 60px rgba(168,85,247,0.4);
+    transition: all 0.4s;
+}
+.bts-img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 30px 80px rgba(168,85,247,0.6);
+}
+
+/* CV MODAL – PDF VIEWER CANTIK */
+.cv-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    backdrop-filter: blur(20px);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+}
+.cv-modal.active { display: flex; }
+.cv-modal iframe {
+    width: 90%;
+    max-width: 1000px;
+    height: 90vh;
+    border-radius: 24px;
+    border: none;
+    box-shadow: 0 0 120px rgba(168,85,247,0.9);
+}
+.close-cv {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    font-size: 50px;
+    color: white;
+    background: rgba(255,255,255,0.1);
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.close-cv:hover { background:#a855f7; transform:rotate(90deg); }
+
+
+/* TIMELINE PENGALAMAN KERJA – SUPER CANTIK & GLOWING */
+.timeline {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    background: linear-gradient(to bottom, #a855f7, #00ffff);
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -3px;
+    border-radius: 6px;
+    box-shadow: 0 0 20px rgba(168,85,247,0.6);
+}
+.timeline-item {
+    padding: 10px 50px;
+    position: relative;
+    width: 50%;
+}
+.timeline-item:nth-child(odd) { left: 0; }
+.timeline-item:nth-child(even) { left: 50%; }
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background: #0a0a0f;
+    border: 6px solid #a855f7;
+    border-radius: 50%;
+    top: 28px;
+    right: -19px;
+    z-index: 10;
+    box-shadow: 0 0 30px rgba(168,85,247,0.9);
+}
+.timeline-item:nth-child(even)::after { left: -16px; }
+.timeline-date {
+    position: absolute;
+    top: 22px;
+    background: rgba(168,85,247,0.2);
+    backdrop-filter: blur(10px);
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #e0a8ff;
+    border: 1px solid #a855f7;
+}
+.timeline-item:nth-child(odd) .timeline-date { right: 30px; }
+.timeline-item:nth-child(even) .timeline-date { left: 30px; }
+.timeline-content {
+    padding: 2rem;
+    background: rgba(30,30,60,0.7);
+    border-radius: 1px solid rgba(168,85,247,0.3);
+    border-radius: 24px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+.timeline-content h3 {
+    color: #fff;
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+}
+.timeline-content h4 {
+    color: #a855f7;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+}
+.timeline-content p {
+    color: #ccc;
+    line-height: 1.6;
+}
+
+/* Responsif Timeline */
+@media (max-width: 992px) {
+    .timeline::after { left: 40px; }
+    .timeline-item { width: 100%; padding-left: 90px; padding-right: 25px; left: 0 !important; }
+    .timeline-item::after { left: 17px; }
+    .timeline-date { left: 90px !important; top: -45px; }
+}
+
+/* CONTACT BUTTONS – CANTIK & GLOWING */
+.contact-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 50px;
+    background: rgba(168,85,247,0.15);
+    border: 2px solid #a855f7;
+    border-radius: 70px;
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-decoration: none;
+    backdrop-filter: blur(15px);
+    transition: all 0.4s;
+    min-width: 380px;
+}
+.contact-btn:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 80px rgba(168,85,247,0.8);
+    background: rgba(168,85,247,0.3);
+}
+.contact-btn svg {
+    transition: 0.3s;
+}
+.contact-btn:hover svg {
+    transform: scale(1.2);
+}
+
+
+/* HERO BUTTONS – SEJAJAR SEMPURNA */
+.hero-buttons {
+    display: flex;
+    gap: 1.8rem;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 2.5rem;
+}
+.hero-buttons .btn {
+    padding: 18px 50px;
+    font-size: 1.12rem;
+    min-width: 220px;
+}
+.btn-secondary {
+    background: rgba(59,130,246,0.2) !important;
+    border-color: #3b82f6 !important;
+}
