@@ -1,28 +1,29 @@
 {
   "version": 2,
-  "functions": {
-    "api/index.php": {
-      "runtime": "vercel-php@0.6.2"
-    }
-  },
-  "routes": [
+  "builds": [
     {
-      "src": "/build/(.*)",
-      "dest": "/public/build/$1"
+      "src": "public/index.php",
+      "use": "@vercel/php",
+      "config": { "phpVersion": "8.2" }
     },
     {
-      "src": "/(.*)",
-      "dest": "/api/index.php"
+      "src": "public/build/**",
+      "use": "@vercel/static"
     }
   ],
-  "env": {
-    "APP_ENV": "production",
-    "APP_DEBUG": "false",
-    "APP_URL": "https://portofolio-akud.vercel.app",
-    "SESSION_DRIVER": "cookie",
-    "CACHE_DRIVER": "array",
-    "LOG_CHANNEL": "stderr"
+  "routes": [
+    { "src": "/build/(.*)", "dest": "/public/build/$1" },
+    { "src": "/(.*)", "dest": "/public/index.php" }
+  ],
+  "functions": {
+    "public/index.php": {
+      "runtime": "vercel-php@0.7.0"
+    }
   },
-  "buildCommand": "composer install --no-dev --optimize-autoloader && npm ci && npm run build",
-  "outputDirectory": "public"
+  "build": {
+    "env": {
+      "APP_ENV": "production",
+      "APP_DEBUG": "false"
+    }
+  }
 }
