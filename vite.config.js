@@ -1,21 +1,11 @@
 import { defineConfig } from 'vite';
-import blade from 'vite-plugin-laravel-blade';
+import laravel from 'laravel-vite-plugin';
 
 export default defineConfig({
     plugins: [
-        blade({
-            // Ini yang bikin @extends & @yield jalan tanpa PHP!
-            input: 'resources/views/welcome.blade.php',
-            output: 'dist/index.html',
+        laravel({
+            input: ['resources/css/app.css', 'resources/js/app.js'],
+            refresh: true,
         }),
     ],
-    build: {
-        outDir: 'dist',
-        manifest: true,
-        rollupOptions: {
-            input: {
-                main: 'resources/views/welcome.blade.php'
-            }
-        }
-    }
 });
