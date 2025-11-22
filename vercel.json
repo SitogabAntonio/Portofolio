@@ -3,8 +3,7 @@
   "builds": [
     {
       "src": "public/index.php",
-      "use": "@vercel/php",
-      "config": { "phpVersion": "8.2" }
+      "use": "@vercel/php"
     },
     {
       "src": "public/build/**",
@@ -12,18 +11,19 @@
     }
   ],
   "routes": [
-    { "src": "/build/(.*)", "dest": "/public/build/$1" },
-    { "src": "/(.*)", "dest": "/public/index.php" }
+    {
+      "src": "/build/(.*)",
+      "dest": "/public/build/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/index.php"
+    }
   ],
-  "functions": {
-    "public/index.php": {
-      "runtime": "vercel-php@0.7.0"
-    }
-  },
-  "build": {
-    "env": {
-      "APP_ENV": "production",
-      "APP_DEBUG": "false"
-    }
+  "buildCommand": "composer install --no-dev --optimize-autoloader && npm ci && npm run build",
+  "outputDirectory": "public",
+  "env": {
+    "APP_ENV": "production",
+    "APP_DEBUG": "false"
   }
 }
