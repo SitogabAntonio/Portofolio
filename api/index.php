@@ -1,3 +1,4 @@
 <?php
-// api/index.php — Forward ke public/index.php
-require __DIR__.'/../public/index.php';
+// api/index.php — Entry point untuk Vercel PHP runtime
+chdir(__DIR__ . '/../public');
+require 'index.php';
