@@ -1,18 +1,26 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import tailwindcss from '@tailwindcss/vite';
+import blade from 'vite-plugin-laravel-blade';
 
 export default defineConfig({
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.js'],
-            publicDirectory: 'public',
-            refresh: true,
+            refresh: false,
         }),
-        tailwindcss(),
+        blade({
+            // Ini yang bikin @extends & @yield jalan tanpa PHP!
+            input: 'resources/views/welcome.blade.php',
+            output: 'dist/index.html',
+        }),
     ],
     build: {
-        outDir: 'public/build',
+        outDir: 'dist',
         manifest: true,
-    },
+        rollupOptions: {
+            input: {
+                main: 'resources/views/welcome.blade.php'
+            }
+        }
+    }
 });
